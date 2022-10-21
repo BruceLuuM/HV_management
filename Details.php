@@ -7,9 +7,9 @@ include("config/connection.php");
 
 <head>
     <meta charset="utf-8" />
-    <title>Bất động sản</title>
-    <link rel="icon" href="images/icon/icons8-account-64.png" type="image/gif">
+    <title>Details</title>
     <link rel="stylesheet" type="text/css" href="css/dashbroad.css" />
+    <link rel="stylesheet" type="text/css" href="css/Detail.css" />
 </head>
 
 <body>
@@ -167,249 +167,62 @@ include("config/connection.php");
         </div>
     </div>
     </div>
-    <div class="container">
-        <div class="big-logo">
-            <div id="image-transition" style="flex-grow:2">
-                <img src="https://s1.cdn.batdongsan.vn/upload/file/2021/11/0001/f13da932b0ad78f321bc2.jpg" class="bottom">
-                <img src="https://s1.cdn.batdongsan.vn/upload/file/2021/11/0001/9bcfada6b4397c672528.jpg" class="top">
-            </div>
-            <img src=" https://i3.ytimg.com/vi/KRvFvll_ykE/maxresdefault.jpg" alt="" style="flex-grow:1">
-        </div>
 
+    <div class="Detail">
         <?php
         try {
-            $stmt_news = $conn->prepare("SELECT * FROM news WHERE id_cat = :id ORDER BY id_news DESC LIMIT 5");
-            $stmt_news->bindValue(":id", $_GET['id_cat']);
-            $stmt_news->execute();
+            $stmt_descriptions = $conn->prepare("SELECT * FROM news WHERE id_news = :id_news LIMIT 1");
+            $stmt_descriptions->bindValue(":id_news", $_GET['id_news']);
+            $stmt_descriptions->execute();
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
+        while ($fetch_descriptions = $stmt_descriptions->fetch()) {
         ?>
-
-        <div class="top-news">
-            <div class=top-search>
-                <h3>TIN TỨC NỔI BẬT </h3>
-                <div>
-                    <a href="">Thông tin sự kiện</a>
-                    <a href="">Nhìn ra thế giới</a>
-                    <a href="">Tin tổng hợp</a>
-                    <a href="">Chuyển động thị trường</a>
-                    <a href="">Chính sách quản lý</a>
+            <div class="main">
+                <div class="detail-img">
+                    <img src="/admin_pages/news/uploads/<?php echo $fetch_descriptions['image'] ?>" alt="">
                 </div>
-            </div>
-            <div class="top-news-info">
-                <?php
-                while ($fetchNew = $stmt_news->fetch()) {
-                ?>
-                    <div class="each-top-news">
-                        <a href="Details.php?id_cat=<?php echo $fetchCat['id']; ?>&id_news=<?php echo $fetchNew['id_news']; ?>">
-                            <img src="/admin_pages/news/uploads/<?php echo $fetchNew['image'] ?>" alt="">
-                        </a>
-                        <p><strong><?php echo $fetchNew['news_header'] ?></strong></p>
+                <div class="detail-info ">
+                    <h3><?php echo $fetch_descriptions['news_header']; ?></h3>
+                    <p><strong style="color:red; font-size:18px;"><?php echo $fetch_descriptions['price'] ?></strong></p>
+                    <hr color="#000" size="1" width="100%">
+                    <p><strong>Diện tích: </strong><?php echo $fetch_descriptions['area'] ?></p>
+                    <p><strong>Số phòng: </strong><?php echo $fetch_descriptions['rooms'] ?></p>
+                    <hr color="#000" size="1" width="100%">
+                    <p><strong>Mã tin: </strong><?php echo $fetch_descriptions['id_news'] ?></p>
+                    <p>Trạng thái: <?php echo $fetch_descriptions['state']; ?></p>
+                    <hr color="#000" size="1" width="100%">
+                    <div class="warning">
+                        <a><img src="images/icon/icons8-share-30.png" alt=""> Chia sẻ</a>
+                        <a><img src="images/icon/icons8-warning-58.png" alt=""> Báo xấu</a>
+                        <a><img src="images/icon/icons8-heart-50.png" alt=""> Lưu tin</a>
                     </div>
-                <?php
-                }
-                ?>
-            </div>
-        </div>
-
-        <?php
-        try {
-            $stmt_news = $conn->prepare("SELECT * FROM news WHERE id_cat = :id ORDER BY id_news DESC LIMIT 5");
-            $stmt_news->bindValue(":id", $_GET['id_cat']);
-            $stmt_news->execute();
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-        }
-        ?>
-
-        <div class="top-news">
-            <div class=top-search>
-                <h3>SỰ KIỆN NỔI BẬT </h3>
-                <div>
-                    <a href="">Sự kiện ra mắt</a>
-                    <a href="">Sự kiện đầu tư</a>
-                    <a href="">Sự kiện hội thảo</a>
-                    <a href="">Sự kiện đào tạo</a>
                 </div>
-            </div>
-            <div class="top-news-info">
-                <?php
-                while ($fetchNew = $stmt_news->fetch()) {
-                ?>
-                    <div class="each-top-news">
-                        <a href="Details.php?id_cat=<?php echo $fetchCat['id']; ?>&id_news=<?php echo $fetchNew['id_news']; ?>">
-                            <img src="/admin_pages/news/uploads/<?php echo $fetchNew['image'] ?>" alt="">
-                        </a>
-                        <p><strong><?php echo $fetchNew['news_header'] ?></strong></p>
+
+                <div class="user-contact">
+                    <div class="detail-user">
+                        <img src="images/icon/icons8-account-64.png" alt="">
+                        <p>Người đăng: <?php echo $fetch_descriptions['provider']; ?></p>
                     </div>
-                <?php
-                }
-                ?>
-            </div>
-        </div>
-
-        <?php
-        try {
-            $stmt_news = $conn->prepare("SELECT * FROM news WHERE id_cat = :id ORDER BY id_news DESC LIMIT 5");
-            $stmt_news->bindValue(":id", $_GET['id_cat']);
-            $stmt_news->execute();
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-        }
-        ?>
-
-        <div class="top-news">
-            <div class=top-search>
-                <h3>BẤT ĐỘNG SẢN NỔI BẬT </h3>
-                <div>
-                    <a href=""><img src="images/icon/icons8-less-than-30.png" alt="" width="14px" height="14px"></a>
-                    <a href=""><img src="images/icon/icons8-more-than-30.png" alt="" width="14px" height="14px"></a>
-                </div>
-            </div>
-            <div class="top-news-info">
-                <?php
-                while ($fetchNew = $stmt_news->fetch()) {
-                ?>
-                    <div class="each-top-news">
-                        <a href="Details.php?id_cat=<?php echo $fetchCat['id']; ?>&id_news=<?php echo $fetchNew['id_news']; ?>">
-                            <img src="/admin_pages/news/uploads/<?php echo $fetchNew['image'] ?>" alt="">
-                        </a>
-                        <p><strong><?php echo $fetchNew['news_header'] ?></strong></p>
+                    <button>email</button>
+                    <button>number</button>
+                    <div class="fast-contact">
+                        <a href=""> <img src="images/icon/icons8-paper-plane-50.png" alt="" width="15px"> trả giá</a>
+                        <a href=""> <img src="images/icon/icons8-paper-plane-50.png" alt="" width="15px"> liên hệ</a>
                     </div>
-                <?php
-                }
-                ?>
-            </div>
-        </div>
-
-        <div class="sidebar">
-            <ul class="list_sidebar">
-                <h3>TOP 10 PHÂN KHÚC TIÊU BIỂU</h3>
-                <?php
-                try {
-                    $stmt = $conn->prepare("SELECT * FROM categorys ORDER BY id LIMIT 10");
-                    $stmt->execute();
-                    // $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-                    // header("Location:");s
-                } catch (PDOException $e) {
-                    echo $e->getMessage();
-                }
-                while ($fetch_cat = $stmt->fetch()) {
-                ?>
-                    <li><a href="?id_cat=<?php echo $fetch_cat['id'] ?>"> <?php echo $fetch_cat['name'] ?></a></li>
-                <?php
-                }
-                ?>
-            </ul>
-            <ul class="list_sidebar">
-                <h3>TOP 5 CHỦ ĐẦU TƯ TIÊU BIỂU </h3>
-
-                <?php
-                try {
-                    $stmt_top_provider = $conn->prepare("SELECT * FROM news ORDER BY id_news LIMIT 5");
-                    $stmt_top_provider->execute();
-                    // $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-                    // header("Location:");s
-                } catch (PDOException $e) {
-                    echo $e->getMessage();
-                }
-                while ($fetch_top_provider = $stmt_top_provider->fetch()) {
-                ?>
-                    <li><a href="?id_cat=<?php echo $fetch_top_provider['id_news'] ?>"> <?php echo $fetch_top_provider['provider'] ?></a></li>
-                <?php
-                }
-                ?>
-            </ul>
-        </div>
-        <div class="info">
-            <?php
-            try {
-                $stmt_cat = $conn->prepare("SELECT * FROM categorys WHERE id = :id LIMIT 1");
-                $stmt_cat->bindValue(":id", $_GET['id_cat']);
-                $stmt_cat->execute();
-
-                $fetchCat = $stmt_cat->fetch();
-
-                $stmt_news = $conn->prepare("SELECT * FROM news WHERE id_cat = :id ORDER BY id_news DESC LIMIT 5");
-                $stmt_news->bindValue(":id", $_GET['id_cat']);
-                $stmt_news->execute();
-            } catch (PDOException $e) {
-                echo $e->getMessage();
-            }
-            ?>
-            <div class="news_container">
-                <h3>BẤT ĐỘNG SẢN DÀNH CHO BẠN</h3>
-                <?php
-                while ($fetchNew = $stmt_news->fetch()) {
-                ?>
-                    <div class="news_info">
-                        <a href="Details.php?id_cat=<?php echo $fetchCat['id']; ?>&id_news=<?php echo $fetchNew['id_news']; ?>">
-                            <img src="/admin_pages/news/uploads/<?php echo $fetchNew['image'] ?>" alt="">
-                        </a>
-
-                        <div class="news_des">
-                            <a href="Details.php?id_cat=<?php echo $fetchCat['id']; ?>&id_news=<?php echo $fetchNew['id_news']; ?>">
-                                <p><?php echo $fetchNew['news_header']; ?></p>
-                            </a>
-                            <div class="core_info">
-                                <p> <strong style="color:red"><?php echo $fetchNew['price']; ?></strong> </p>
-                                <p> <?php echo $fetchNew['area']; ?> </p>
-                                <p> <?php echo $fetchCat['name']; ?></p>
-                            </div>
-                            <div class="text" style="overflow: hidden; text-overflow: ellipsis;  display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2;-webkit-box-orient: vertical;">
-                                <p><?php echo $fetchNew['descriptions'] ?></p>
-                            </div>
-                            <div class="user">
-                                <p><img src="images/icon/icons8-account-64.png" alt=""></p>
-                                <p><?php echo $fetchNew['provider'] ?></p>
-                                <p><img src="images/icon/icons8-clock-50.png" alt=""></p>
-                                <p>00:00:00</p>
-                                <p><img src="images/icon/icons8-heart-50.png" alt=""></p>
-                                <p>Lưu tin</p>
-                            </div>
-
-                        </div>
-                    </div>
-                <?php } ?>
-            </div>
-        </div>
-
-        <div class="top-news">
-            <div class=top-search>
-                <h3>BẤT ĐỘNG SẢN NỔI BẬT </h3>
-                <div>
-                    <a href=""><img src="images/icon/icons8-less-than-30.png" alt="" width="14px" height="14px"></a>
-                    <a href=""><img src="images/icon/icons8-more-than-30.png" alt="" width="14px" height="14px"></a>
+                    <p>Hãy gửi yêu cầu tư vấn. Tôi sẽ liên hệ trả lời bạn trong vòng 60 phút.</p>
                 </div>
             </div>
-            <div class="top-news-info">
-                <div class="each-top-news">
-                    <a href="Details.php?id_cat=<?php echo $fetchCat['id']; ?>&id_news=<?php echo $fetchNew['id_news']; ?>">
-                        <img src="/admin_pages/news/uploads/<?php echo $fetchNew['image'] ?>" alt="">
-                    </a>
-                    <p><strong><?php echo $fetchNew['news_header'] ?></strong></p>
-                </div>
-            </div>
-        </div>
+    </div>
 
-        <div class="top-news">
-            <div class=top-search>
-                <h3>BẤT ĐỘNG SẢN NỔI BẬT </h3>
-                <div>
-                    <a href=""><img src="images/icon/icons8-less-than-30.png" alt="" width="14px" height="14px"></a>
-                    <a href=""><img src="images/icon/icons8-more-than-30.png" alt="" width="14px" height="14px"></a>
-                </div>
-            </div>
-            <div class="top-news-info">
-                <div class="each-top-news">
-                    <a href="Details.php?id_cat=<?php echo $fetchCat['id']; ?>&id_news=<?php echo $fetchNew['id_news']; ?>">
-                        <img src="/admin_pages/news/uploads/<?php echo $fetchNew['image'] ?>" alt="">
-                    </a>
-                    <p><strong><?php echo $fetchNew['news_header'] ?></strong></p>
-                </div>
-            </div>
-        </div>
+
+    <div class="Detail">
+        <h3>NỘI DUNG TIN ĐĂNG</h3>
+        <p><?php echo nl2br($fetch_descriptions['descriptions']); ?></p>
+    <?php }
+    ?>
+    </div>
 
     </div>
     <div class="footer">
